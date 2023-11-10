@@ -20,16 +20,12 @@ from Environnement import Environnement
 from Agent import Agent
 
 class MarkovChain:
-    def __init__(self):
-        self.environnement = Environnement()
-        self.agent = Agent()
+    def __init__(self,agent : Agent,env : Environnement):
+        self.environnement = env
+        self.agent = agent
         
     def step(self):
-        # get the state
         state = self.environnement.getState()
-        # get the action
         action = self.agent.getAction(state)
-        # apply the action to the environnement
-        state , reward = self.environnement.applyAction(action)
-        # update the agent
+        state , reward , done = self.environnement.applyAction(action)
         self.agent.update(state,reward)
