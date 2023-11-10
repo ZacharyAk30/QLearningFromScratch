@@ -2,7 +2,7 @@
 
 import numpy as np
 from Environnement import Environnement
-from GridWorld.Entities import Entities,EntitiesList
+from GridWorld.Entities import Entities,EntitiesList,Agent
 
 class GWEnvironnement(Environnement):
     def __init__(self,grid_shape:tuple,entities:list[Entities]):
@@ -25,14 +25,18 @@ class GWEnvironnement(Environnement):
         out_of_grid = new_agent_pos_x >= self.grid_shape[0] or new_agent_pos_x < 0 or new_agent_pos_y >= self.grid_shape[1] or new_agent_pos_y < 0
         if out_of_grid:
             reward = -999
-            
-        if type(self.world[new_agent_pos_x][new_agent_pos_y]) in EntitiesList:
+        elif type(self.world[new_agent_pos_x][new_agent_pos_y]) in EntitiesList:
             entity = self.world[new_agent_pos_x][new_agent_pos_y]
             if entity.type == "goal":
                 self.finish = True
             reward = entity.reward
             self.world[self.agent_pos[0]][self.agent_pos[1]] = 0
             self.world[new_agent_pos_x][new_agent_pos_y] = entity
+            self.agent_pos = [new_agent_pos_x,new_agent_pos_y]
+        else:
+            self.world[self.agent_pos[0]][self.agent_pos[1]] = 0
+            self.world[new_agent_pos_x][new_agent_pos_y] = Agent((new_agent_pos_x,new_agent_pos_y))
+            self.agent_pos = [new_agent_pos_x,new_agent_pos_y]
         state = self.getState()
         return state , reward ,self.finish
         
@@ -40,7 +44,7 @@ class GWEnvironnement(Environnement):
         state = []
         for i in self.world:
             for j in i:
-                if type(j) == Entities:
+                if type(j) in EntitiesList:
                     state.append(j)
         return state
         
@@ -57,6 +61,8 @@ class GWEnvironnement(Environnement):
                     string += " T "  # trap
                 elif str(j) == 'goal':
                     string += " G "  # goal
+                elif str(j) == 'agent':
+                    string += " A "  # goal
                 else:
                     string += str(j)
             string += "\n"

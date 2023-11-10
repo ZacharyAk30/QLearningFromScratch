@@ -6,7 +6,7 @@ class Entities(ABC):
     def __init__(self,type,position,reward):
         self.type = type
         self.position = position
-        self.reward = None
+        self.reward = reward
     def __str__(self):
         return self.type
     
