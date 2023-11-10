@@ -1,21 +1,21 @@
 from GridWorld.GWAgent import GridWorldAgent
 from GridWorld.GWEnvironnement import GWEnvironnement
 from markovchaine import MarkovChain
-from GridWorld import Entities
+from GridWorld import GWEntities
 
 if __name__ == '__main__':
     grid_shape = (5,5)
     entity_list = [
-        Entities.Agent((0,0)),
-        Entities.Goal((4,4)),
-        Entities.Wall((3,2)),
-        Entities.Wall((4,2)),
-        Entities.Wall((1,4)),
-        Entities.Wall((3,1)),
-        Entities.Trap((3,3)),
+        GWEntities.Agent((0,0)),
+        GWEntities.Goal((4,4)),
+        GWEntities.Wall((3,2)),
+        GWEntities.Wall((4,2)),
+        GWEntities.Wall((1,4)),
+        GWEntities.Wall((3,1)),
+        GWEntities.Trap((3,3)),
     ]
     env = GWEnvironnement(grid_shape,entity_list)
-    agent = GridWorldAgent(policy="humain")
+    agent = GridWorldAgent(grid_size=grid_shape,num_entities=len(entity_list),policy="Qlearning")
     markovchain = MarkovChain(agent,env)
     finish = False
     recap = []

@@ -7,7 +7,14 @@ ActionSet = {
     "right" : [-1, 0],
     "stay" : [0, 0]
 }
-
+TranslateEntities = {
+        "agent" : 0,
+        "goal" : 1,
+        "trap" : 2,
+        "wall" : 3,
+        "grill" : 4,
+        "nothing" : 5
+    }    
 
 class GridWorldProperty(MarkovProperty):
     def __init__(self):

@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 class Entities(ABC):
-    Types = ["agent","trap","wall","goal"]
     @abstractmethod
     def __init__(self,type,position,reward):
         self.type = type
@@ -22,6 +21,9 @@ class Wall(Entities):
 class Goal(Entities):
     def __init__(self,position, reward=100):
         super().__init__("goal",position, reward)
+class Nothing(Entities):
+    def __init__(self,position, reward=0):
+        super().__init__("nothing",position, reward)
         
         
-EntitiesList = [Agent,Trap,Wall,Goal]
+EntitiesList = [Agent,Trap,Wall,Goal,Nothing]

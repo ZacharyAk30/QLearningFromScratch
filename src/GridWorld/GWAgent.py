@@ -1,13 +1,13 @@
 from Agent import Agent
 import numpy as np
-from Qlearning import Qlearning
+from GWQlearning import GWDeepQlearning
 
 class GridWorldAgent(Agent):
-    def __init__(self, reward=0, state=None,policy= "random"):
+    def __init__(self,grid_size,num_entities, reward=0, state=None,policy= "random"):
         super().__init__(reward, state)
         self.policy =  policy
         self.name = "GridWorldAgent"
-        self.Qlearning = Qlearning()
+        self.GWDeepQlearning = GWDeepQlearning(grid_size, num_entities)
         
         
     def getAction(self, state):
@@ -27,7 +27,7 @@ class GridWorldAgent(Agent):
                 print("action non valide. format attendu : x y")
                 
         if self.policy == "Qlearning":
-            action = self.Qlearning(state)
+            action = self.GWDeepQlearning(state)
         return action
     
     def fromStateToRender(self,state):
@@ -37,6 +37,5 @@ class GridWorldAgent(Agent):
         return env.render()
         
     
-    def update(self, state, reward):
-        super().update(state, reward)
-    
+    def update(self, state, reward, done, action, next_state):
+        self.GWDeepQlearning.update(state, action, reward, next_state, done)

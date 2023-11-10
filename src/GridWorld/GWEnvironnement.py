@@ -2,7 +2,7 @@
 
 import numpy as np
 from Environnement import Environnement
-from GridWorld.Entities import Entities,EntitiesList,Agent
+from GridWorld.GWEntities import Entities,EntitiesList,Agent,Nothing
 
 class GWEnvironnement(Environnement):
     def __init__(self,grid_shape:tuple,entities:list[Entities]):
@@ -12,7 +12,7 @@ class GWEnvironnement(Environnement):
         self.finish = False        
 
     def create_world(self):
-        world = [[0 for i in range(self.grid_shape[0])] for j in range(self.grid_shape[1])]
+        world = [[Nothing(position=[i,j]) for i in range(self.grid_shape[0])] for j in range(self.grid_shape[1])]
         for entity in self.entities:
             if entity.type == "agent":
                 self.agent_pos = entity.position
@@ -31,7 +31,7 @@ class GWEnvironnement(Environnement):
             if entity.type == "goal":
                 self.finish = True
             reward = entity.reward
-            self.world[self.agent_pos[0]][self.agent_pos[1]] = 0
+            self.world[self.agent_pos[0]][self.agent_pos[1]] = Nothing((self.agent_pos[0],self.agent_pos[1]))
             self.world[new_agent_pos_x][new_agent_pos_y] = Agent((new_agent_pos_x,new_agent_pos_y))
             self.agent_pos = [new_agent_pos_x,new_agent_pos_y]
         else:
@@ -45,8 +45,7 @@ class GWEnvironnement(Environnement):
         state = [self.grid_shape]
         for i in self.world:
             for j in i:
-                if type(j) in EntitiesList:
-                    state.append(j)
+                state.append(j)
         return state
         
     def render(self):
@@ -54,7 +53,7 @@ class GWEnvironnement(Environnement):
         string = ""
         for i in self.world:
             for j in i:
-                if j == 0:
+                if j == 0 or str(j)=='nothing':
                     string += " . "  # open space
                 elif str(j) == 'wall':
                     string += " W "  # wall
