@@ -24,6 +24,7 @@ class GridWorldAgent(Agent):
                 action = [int(action[0]),int(action[1])]
             except:
                 action = [0,0]
+                print("action non valide. format attendu : x y")
                 
         if self.policy == "Qlearning":
             action = self.Qlearning(state)
