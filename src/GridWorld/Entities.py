@@ -22,3 +22,6 @@ class Wall(Entities):
 class Goal(Entities):
     def __init__(self,position, reward=100):
         super().__init__("goal",position, reward)
+        
+        
+EntitiesList = [Agent,Trap,Wall,Goal]

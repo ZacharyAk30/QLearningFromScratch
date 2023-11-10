@@ -1,8 +1,7 @@
-from MarkovProperty import MarkovProperty
 from GridWorld.GWAgent import GridWorldAgent
 from GridWorld.GWEnvironnement import GWEnvironnement
 from markovchaine import MarkovChain
-import Entities
+from GridWorld import Entities
 
 if __name__ == '__main__':
     grid_shape = (10,10)
@@ -20,14 +19,15 @@ if __name__ == '__main__':
     
     markovchain = MarkovChain(agent,env)
     finish = False
+    recap = []
     while not finish:
-        recap = []
         state , reward , finish = markovchain.step()
         recap.append(env.render())
     step_count = 0
     for i in recap:
         print("step : ",step_count)
         print(i)
+        step_count += 1
         
         
     

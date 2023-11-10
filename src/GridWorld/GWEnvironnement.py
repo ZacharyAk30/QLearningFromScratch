@@ -2,7 +2,7 @@
 
 import numpy as np
 from Environnement import Environnement
-from Entities import Entities
+from GridWorld.Entities import Entities,EntitiesList
 
 class GWEnvironnement(Environnement):
     def __init__(self,grid_shape:tuple,entities:list[Entities]):
@@ -12,11 +12,11 @@ class GWEnvironnement(Environnement):
         self.finish = False        
 
     def create_world(self):
-        world = np.zeros(self.grid_shape)
+        world = [[0 for i in range(self.grid_shape[0])] for j in range(self.grid_shape[1])]
         for entity in self.entities:
             if entity.type == "agent":
                 self.agent_pos = entity.position
-            world[entity.position[0],entity.position[1]] = entity
+            world[entity.position[0]][entity.position[1]] = entity
         return world
         
     def applyAction(self, action):
@@ -26,13 +26,13 @@ class GWEnvironnement(Environnement):
         if out_of_grid:
             reward = -999
             
-        if type(self.world[new_agent_pos_x,new_agent_pos_y]) == Entities:
-            entity = self.world[new_agent_pos_x,new_agent_pos_y]
+        if type(self.world[new_agent_pos_x][new_agent_pos_y]) in EntitiesList:
+            entity = self.world[new_agent_pos_x][new_agent_pos_y]
             if entity.type == "goal":
                 self.finish = True
             reward = entity.reward
-            self.world[self.agent_pos[0],self.agent_pos[1]] = 0
-            self.world[new_agent_pos_x,new_agent_pos_y] = entity
+            self.world[self.agent_pos[0]][self.agent_pos[1]] = 0
+            self.world[new_agent_pos_x][new_agent_pos_y] = entity
         state = self.getState()
         return state , reward ,self.finish
         
@@ -45,7 +45,22 @@ class GWEnvironnement(Environnement):
         return state
         
     def render(self):
-        return self.world
+    # return string self.world that represent the world where entities is aligned with the grid 
+        string = ""
+        for i in self.world:
+            for j in i:
+                if j == 0:
+                    string += " . "  # open space
+                elif str(j) == 'wall':
+                    string += " W "  # wall
+                elif str(j) == 'trap':
+                    string += " T "  # trap
+                elif str(j) == 'goal':
+                    string += " G "  # goal
+                else:
+                    string += str(j)
+            string += "\n"
+        return string
     
     def isfiniish(self):
         for i in self.world:
