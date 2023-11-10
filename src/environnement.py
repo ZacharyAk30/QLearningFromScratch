@@ -4,6 +4,7 @@ class Environnement(ABC):
     @abstractmethod
     def __init__(self):
         # initialise l'environnement
+        self.state = None
         pass
 
     @abstractmethod
