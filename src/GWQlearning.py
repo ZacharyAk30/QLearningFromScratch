@@ -3,24 +3,25 @@ from GridWorld.GWProperty import TranslateEntities
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
+import random
 
 class GWDeepQlearning:
-    def __init__(self, grid_size, hidden_dim=64, lr=0.05, gamma=0.99):
+    def __init__(self, grid_size, hidden_dim=64, lr=0.05, gamma=0.99,epsilon=0.1):
         self.gamma = gamma
         self.grid_size = grid_size
         self.action_to_int = {
-            (0, -1): 0, # up
-            (0, 1): 1, # down
-            (1, 0): 2, # left
-            (-1, 0): 3, # right
-            (0, 0): 4 # stay
+            (0, -1): 0, 
+            (0, 1): 1, 
+            (1, 0): 2, 
+            (-1, 0): 3, 
+            (0, 0): 4 
         }
         self.action_to_list = {
-            0: [0, -1], # up
-            1: [0, 1], # down
-            2: [1, 0], # left
-            3: [-1, 0], # right
-            4: [0, 0] # stay            
+            0: [0, -1], 
+            1: [0, 1], 
+            2: [1, 0], 
+            3: [-1, 0], 
+            4: [0, 0]       
         }
         total_grid_size = grid_size[0] * grid_size[1]
         input_shape = (total_grid_size + 1) * 4
@@ -31,6 +32,7 @@ class GWDeepQlearning:
         )
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
         self.criterion = nn.MSELoss()
+        self.epsilon = epsilon
 
     def update(self, state:list, action:list, reward:int, next_state:list, done:bool):
         state = self._process_state(state)
@@ -59,7 +61,10 @@ class GWDeepQlearning:
 
     def __call__(self, state):
         state = self._process_state(state)
-        q_values = self.model(state)
+        if random.random() < self.epsilon:  # exploration 
+            action =  random.choice(range(len(self.action_to_int)))
+            return self.action_to_list[action]
+        q_values = self.model(state) # policy
         action_index = np.argmax(q_values.detach().numpy())
         action = list(self.action_to_list)[action_index]
         action = self.action_to_list[action]

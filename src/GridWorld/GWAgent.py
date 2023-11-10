@@ -33,7 +33,8 @@ class GridWorldAgent(Agent):
     def fromStateToRender(self,state):
         from  GridWorld.GWEnvironnement import GWEnvironnement
         grid_shape = state[0]
-        env = GWEnvironnement(grid_shape=grid_shape,entities=state[1:])
+        entity = [ent for ent in state[1:] if ent.type != "nothing"]
+        env = GWEnvironnement(grid_shape=grid_shape,entities=entity)
         return env.render()
         
     
