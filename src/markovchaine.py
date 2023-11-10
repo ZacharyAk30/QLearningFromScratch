@@ -16,8 +16,8 @@
 #                  ----------------|                                 |         
 #                                  |_________________________________|         
 
-from environnement import Environnement
-from agent import Agent
+from Environnement import Environnement
+from Agent import Agent
 
 class MarkovChain:
     def __init__(self):
