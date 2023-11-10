@@ -27,5 +27,6 @@ class MarkovChain:
     def step(self):
         state = self.environnement.getState()
         action = self.agent.getAction(state)
-        state , reward , done = self.environnement.applyAction(action)
+        state , reward , finish = self.environnement.applyAction(action)
         self.agent.update(state,reward)
+        return state , reward , finish

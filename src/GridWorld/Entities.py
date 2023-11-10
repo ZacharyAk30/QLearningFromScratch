@@ -11,14 +11,14 @@ class Entities(ABC):
         return self.type
     
 class Agent(Entities):
-    def __init__(self,position, reward):
+    def __init__(self,position, reward=0):
         super().__init__("agent",position, reward)
 class Trap(Entities):
-    def __init__(self,position, reward):
+    def __init__(self,position, reward=-1):
         super().__init__("trap",position, reward)
 class Wall(Entities):
-    def __init__(self,position, reward):
+    def __init__(self,position, reward=-10):
         super().__init__("wall",position, reward)
 class Goal(Entities):
-    def __init__(self,position, reward):
+    def __init__(self,position, reward=100):
         super().__init__("goal",position, reward)
