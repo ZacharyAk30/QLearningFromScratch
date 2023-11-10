@@ -1,11 +1,13 @@
 from Agent import Agent
 import numpy as np
+from Qlearning import Qlearning
 
 class GridWorldAgent(Agent):
     def __init__(self, reward=0, state=None,policy= "random"):
         super().__init__(reward, state)
         self.policy =  policy
         self.name = "GridWorldAgent"
+        self.Qlearning = Qlearning()
         
         
     def getAction(self, state):
@@ -24,7 +26,7 @@ class GridWorldAgent(Agent):
                 action = [0,0]
                 
         if self.policy == "Qlearning":
-            pass
+            action = self.Qlearning(state)
         return action
     
     def fromStateToRender(self,state):
