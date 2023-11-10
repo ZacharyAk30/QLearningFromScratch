@@ -15,8 +15,7 @@ if __name__ == '__main__':
         Entities.Trap((3,3)),
     ]
     env = GWEnvironnement(grid_shape,entity_list)
-    agent = GridWorldAgent()
-    
+    agent = GridWorldAgent(policy="humain")
     markovchain = MarkovChain(agent,env)
     finish = False
     recap = []

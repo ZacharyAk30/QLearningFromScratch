@@ -22,6 +22,7 @@ class GWEnvironnement(Environnement):
     def applyAction(self, action):
         x , y  = action[0] , action[1]
         new_agent_pos_x , new_agent_pos_y  = self.agent_pos[0] + x, self.agent_pos[1] + y
+        reward = 0
         out_of_grid = new_agent_pos_x >= self.grid_shape[0] or new_agent_pos_x < 0 or new_agent_pos_y >= self.grid_shape[1] or new_agent_pos_y < 0
         if out_of_grid:
             reward = -999
@@ -31,7 +32,7 @@ class GWEnvironnement(Environnement):
                 self.finish = True
             reward = entity.reward
             self.world[self.agent_pos[0]][self.agent_pos[1]] = 0
-            self.world[new_agent_pos_x][new_agent_pos_y] = entity
+            self.world[new_agent_pos_x][new_agent_pos_y] = Agent((new_agent_pos_x,new_agent_pos_y))
             self.agent_pos = [new_agent_pos_x,new_agent_pos_y]
         else:
             self.world[self.agent_pos[0]][self.agent_pos[1]] = 0
@@ -41,7 +42,7 @@ class GWEnvironnement(Environnement):
         return state , reward ,self.finish
         
     def getState(self):
-        state = []
+        state = [self.grid_shape]
         for i in self.world:
             for j in i:
                 if type(j) in EntitiesList:
