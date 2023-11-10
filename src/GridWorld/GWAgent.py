@@ -5,6 +5,7 @@ class GridWorldAgent(Agent):
     def __init__(self, reward=0, state=None,policy= "random"):
         super().__init__(reward, state)
         self.policy =  policy
+        self.name = "GridWorldAgent"
         
         
     def getAction(self, state):
@@ -21,6 +22,9 @@ class GridWorldAgent(Agent):
                 action = [int(action[0]),int(action[1])]
             except:
                 action = [0,0]
+                
+        if self.policy == "Qlearning":
+            pass
         return action
     
     def fromStateToRender(self,state):
