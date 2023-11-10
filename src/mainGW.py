@@ -29,10 +29,11 @@ if __name__ == '__main__':
         recap_action.append("action : "+str(action))
         recap_reward.append("reward : "+str(cumlative_reward))
     step_count = 0
-    for world,action in zip(recap,recap_action):
+    for world,action,reward in zip(recap,recap_action,recap_reward):
         print("step : ",step_count)
         print(action)
         print(world)
+        print(reward)
         step_count += 1
         
         

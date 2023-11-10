@@ -15,9 +15,12 @@ class GridWorldAgent(Agent):
         if self.policy == "humain":
             env_render = self.fromStateToRender(state)
             print(env_render)
-            action = input("action : ")
-            action = action.split(" ")
-            action = [int(action[0]),int(action[1])]
+            try :
+                action = input("action : ")
+                action = action.split(" ")
+                action = [int(action[0]),int(action[1])]
+            except:
+                action = [0,0]
         return action
     
     def fromStateToRender(self,state):
