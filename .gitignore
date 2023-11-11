@@ -1,3 +1,6 @@
 venv/
 .localenv/
 __pycache__/
+**txt
+**pth
+**.csv
