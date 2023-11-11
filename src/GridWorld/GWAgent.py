@@ -3,11 +3,11 @@ import numpy as np
 from GWQlearning import GWDeepQlearning
 
 class GridWorldAgent(Agent):
-    def __init__(self,grid_size,num_entities, reward=0, state=None,policy= "random"):
+    def __init__(self,grid_size,num_entities, reward=0, state=None,policy= "random",epsilon=0.1):
         super().__init__(reward, state)
         self.policy =  policy
         self.name = "GridWorldAgent"
-        self.GWDeepQlearning = GWDeepQlearning(grid_size, num_entities)
+        self.GWDeepQlearning = GWDeepQlearning(grid_size, num_entities,epsilon=epsilon)
         
         
     def getAction(self, state):

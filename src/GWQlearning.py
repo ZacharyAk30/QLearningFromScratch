@@ -68,7 +68,7 @@ class GWDeepQlearning:
         action_index = np.argmax(q_values.detach().numpy())
         action = list(self.action_to_list)[action_index]
         action = self.action_to_list[action]
-        return action
+        return action , 
     
     def _process_state(self, state):
         grid_shape:tuple = state[0]
@@ -89,3 +89,28 @@ class GWDeepQlearning:
     def load_model(self, path):
         self.model.load_state_dict(torch.load(path))
     
+
+
+import random
+from collections import deque
+
+class ReplayBuffer:
+    def __init__(self, capacity):
+        self.buffer = deque(maxlen=capacity)
+
+    def push(self, state, action, reward, next_state, done):
+        self.buffer.append((state, action, reward, next_state, done))
+
+    def sample(self, batch_size):
+        return random.sample(self.buffer, batch_size)
+
+    def __len__(self):
+        return len(self.buffer)
+
+# Dans votre classe GWDeepQlearning, vous initialiserez ensuite le ReplayBuffer :
+# self.replay_buffer = ReplayBuffer(capacity)
+
+# Et dans votre méthode update, vous feriez quelque chose comme ceci :
+# if len(self.replay_buffer) > batch_size:
+#     minibatch = self.replay_buffer.sample(batch_size)
+#     # Décompressez le minibatch et utilisez-le pour l'entraînement

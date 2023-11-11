@@ -22,4 +22,4 @@ for recap in recaps:
     df = recaps_to_df(recap)
     all_df.append(df)
 df = pd.concat(all_df)
-df.to_csv("recaps.csv", index=False)
+df.to_csv("src/GridWorld/recaps.csv", index=False)

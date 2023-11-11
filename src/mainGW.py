@@ -59,8 +59,16 @@ def episode(num_ep ,model_weights_path="GWDeepQlearning",recap_path="recap",poli
             f.write("--------------------" + "\n")
             step_count += 1
     agent.GWDeepQlearning.save_model(currModelPath)
-        
+    return cumlative_reward
         
 if __name__ == "__main__":
-    for i in range(10,1000):
-        episode(i)
+    epsilon_start = 1.0
+    epsilon_end = 0.01
+    total_episodes = 50000
+    start_episode = 1433
+    start = 16565
+    slope = (epsilon_end - epsilon_start) / (total_episodes - start_episode)
+    for i in range(start, total_episodes):
+        epsilon = epsilon_start + slope * (i - start_episode)
+        r = episode(i, epsilon=epsilon)
+        print(f"Episode {i} - Epsilon {epsilon:.5f} - Reward {r}")
