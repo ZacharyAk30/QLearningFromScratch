@@ -13,7 +13,7 @@ class Agent(Entities):
     def __init__(self,position, reward=0):
         super().__init__("agent",position, reward)
 class Trap(Entities):
-    def __init__(self,position, reward=-1):
+    def __init__(self,position, reward=-5):
         super().__init__("trap",position, reward)
 class Wall(Entities):
     def __init__(self,position, reward=-10):
@@ -22,7 +22,7 @@ class Goal(Entities):
     def __init__(self,position, reward=100):
         super().__init__("goal",position, reward)
 class Nothing(Entities):
-    def __init__(self,position, reward=0):
+    def __init__(self,position, reward=-1):
         super().__init__("nothing",position, reward)
         
         

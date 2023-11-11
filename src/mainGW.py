@@ -3,7 +3,13 @@ from GridWorld.GWEnvironnement import GWEnvironnement
 from markovchaine import MarkovChain
 from GridWorld import GWEntities
 
-if __name__ == '__main__':
+recapPath = r".\src\GridWorld\recap\\"
+modelPath = r".\src\GridWorld\model\\"
+
+def episode(num_ep ,model_weights_path="GWDeepQlearning",recap_path="recap",policy="Qlearning",epsilon=0.1):
+    currRecapPath = recapPath + recap_path + "-" + str(num_ep) + ".txt"
+    currModelPath = modelPath + model_weights_path + "-" + str(num_ep) + ".pth"
+    
     grid_shape = (5,5)
     entity_list = [
         GWEntities.Agent((0,0)),
@@ -15,7 +21,10 @@ if __name__ == '__main__':
         GWEntities.Trap((3,3)),
     ]
     env = GWEnvironnement(grid_shape,entity_list)
-    agent = GridWorldAgent(grid_size=grid_shape,num_entities=len(entity_list),policy="humain")
+    agent = GridWorldAgent(grid_size=grid_shape,num_entities=len(entity_list),policy=policy,epsilon=epsilon)
+    if num_ep > 0:
+        ModelPath = modelPath + model_weights_path + "-" + str(num_ep - 1) + ".pth"
+        agent.GWDeepQlearning.load_model(ModelPath)
     markovchain = MarkovChain(agent,env)
     finish = False
     recap = []
@@ -24,32 +33,34 @@ if __name__ == '__main__':
     cumlative_reward = 0
     step_count = 0
     while not finish:
-        print("step : ",step_count)
         state , reward , finish,action = markovchain.step()
         cumlative_reward += reward
         recap.append(env.render())
         recap_action.append("action : "+str(action))
         recap_reward.append("reward : "+str(cumlative_reward))
         step_count += 1
-        if step_count > 100:
-            finish = True
     step_count = 0
-    for world,action,reward in zip(recap,recap_action,recap_reward):
-        print("step : ",step_count)
-        if action == f"action : {str([0,-1])}":
-            action = "left"
-        if action == f"action : {str([0,1])}":
-            action = "right"
-        if action == f"action : {str([1,0])}":
-            action = "down"
-        if action == f"action : {str([-1,0])}":
-            action = "up"
-        if action == f"action : {str([0,0])}":
-            action = "stay" 
-        print(action)
-        print(world)
-        print(reward)
-        print("--------------------")
-        step_count += 1
+    with open(currRecapPath, 'w') as f:
+        for world,action,reward in zip(recap,recap_action,recap_reward):
+            f.write("step : " + str(step_count) + "\n")
+            if action == f"action : {str([0,-1])}":
+                action = "left"
+            if action == f"action : {str([0,1])}":
+                action = "right"
+            if action == f"action : {str([1,0])}":
+                action = "down"
+            if action == f"action : {str([-1,0])}":
+                action = "up"
+            if action == f"action : {str([0,0])}":
+                action = "stay" 
+            f.write(action + "\n")
+            f.write(world + "\n")
+            f.write(reward + "\n")
+            f.write("--------------------" + "\n")
+            step_count += 1
+    agent.GWDeepQlearning.save_model(currModelPath)
         
         
+if __name__ == "__main__":
+    for i in range(10,1000):
+        episode(i)
