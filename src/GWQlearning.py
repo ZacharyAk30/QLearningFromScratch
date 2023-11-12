@@ -15,14 +15,12 @@ class GWDeepQlearning:
             (0, 1): 1, 
             (1, 0): 2, 
             (-1, 0): 3, 
-            (0, 0): 4 
         }
         self.action_to_list = {
             0: [0, -1], 
             1: [0, 1], 
             2: [1, 0], 
-            3: [-1, 0], 
-            4: [0, 0]       
+            3: [-1, 0],        
         }
         total_grid_size = grid_size[0] * grid_size[1]
         input_shape = (total_grid_size + 1) * 4
