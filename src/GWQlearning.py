@@ -6,10 +6,10 @@ import numpy as np
 import random
 
 class GWDeepQlearning:
-    def __init__(self, grid_size, hidden_dim=64,capacity = 100 , lr=0.05, gamma=0.99,epsilon=0.1):
+    def __init__(self, grid_size, hidden_dim=64 , lr=0.05, gamma=0.99,epsilon=0.1):
         self.gamma = gamma
         self.grid_size = grid_size
-        self.replay_buffer = ReplayBuffer(capacity)
+        self.replay_buffer = buffer
         self.action_to_int = {
             (0, -1): 0, 
             (0, 1): 1, 
@@ -33,7 +33,7 @@ class GWDeepQlearning:
         self.criterion = nn.MSELoss()
         self.epsilon = epsilon
 
-    def update(self, state:list, action:list, reward:int, next_state:list, done:bool, batch_size:int = 64):
+    def update(self, state:list, action:list, reward:int, next_state:list, done:bool, batch_size:int = 128):
         # Store the transition in the replay buffer
         # This includes the current state, action taken, reward received, next state, and whether the episode ended
         self.replay_buffer.push(state, action, reward, next_state, done)
@@ -92,7 +92,7 @@ class GWDeepQlearning:
         action_index = np.argmax(q_values.detach().numpy())
         action = list(self.action_to_list)[action_index]
         action = self.action_to_list[action]
-        return action , 
+        return action 
     
     def _process_state(self, state):
         grid_shape:tuple = state[0]
@@ -124,6 +124,8 @@ class ReplayBuffer:
 
     def push(self, state, action, reward, next_state, done):
         self.buffer.append((state, action, reward, next_state, done))
+        if len(self.buffer) > 100000:
+            print("buffer full")
 
     def sample(self, batch_size):
         return random.sample(self.buffer, batch_size)
@@ -131,6 +133,7 @@ class ReplayBuffer:
     def __len__(self):
         return len(self.buffer)
 
+buffer = ReplayBuffer(100000)
 # Dans votre classe GWDeepQlearning, vous initialiserez ensuite le ReplayBuffer :
 # self.replay_buffer = ReplayBuffer(capacity)
 

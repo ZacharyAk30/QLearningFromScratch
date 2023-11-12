@@ -64,9 +64,9 @@ def episode(num_ep ,model_weights_path="GWDeepQlearning",recap_path="recap",poli
 if __name__ == "__main__":
     epsilon_start = 1.0
     epsilon_end = 0.01
-    total_episodes = 50000
-    start_episode = 1433
-    start = 16565
+    total_episodes = 10000
+    start_episode = 0
+    start = 0
     slope = (epsilon_end - epsilon_start) / (total_episodes - start_episode)
     for i in range(start, total_episodes):
         epsilon = epsilon_start + slope * (i - start_episode)

@@ -5,7 +5,6 @@ ActionSet = {
     "down" : [0, 1],
     "left" : [1, 0],
     "right" : [-1, 0],
-    "stay" : [0, 0]
 }
 TranslateEntities = {
         "agent" : 0,
