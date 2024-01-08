@@ -134,10 +134,3 @@ class ReplayBuffer:
         return len(self.buffer)
 
 buffer = ReplayBuffer(100000)
-# Dans votre classe GWDeepQlearning, vous initialiserez ensuite le ReplayBuffer :
-# self.replay_buffer = ReplayBuffer(capacity)
-
-# Et dans votre méthode update, vous feriez quelque chose comme ceci :
-# if len(self.replay_buffer) > batch_size:
-#     minibatch = self.replay_buffer.sample(batch_size)
-#     # Décompressez le minibatch et utilisez-le pour l'entraînement
